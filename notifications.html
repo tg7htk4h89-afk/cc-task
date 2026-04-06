@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications — KIB Operations Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body class="app-layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header"><div style="width:30px;height:30px;background:var(--color-accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;color:white;font-size:11px">KIB</div><span class="sidebar-title">Ops Portal</span></div>
+    <ul class="sidebar-nav">
+      <li class="nav-item"><a href="/index.html"><i data-feather="grid"></i> Dashboard</a></li>
+      <li class="nav-item"><a href="/tasks.html"><i data-feather="check-square"></i> Tasks</a></li>
+      <li class="nav-item"><a href="/handover.html"><i data-feather="repeat"></i> Handover</a></li>
+      <li class="nav-item"><a href="/training.html"><i data-feather="book-open"></i> Training</a></li>
+      <li class="nav-item"><a href="/sales.html"><i data-feather="trending-up"></i> Sales</a></li>
+      <li class="nav-item active"><a href="/notifications.html"><i data-feather="bell"></i> Notifications</a></li>
+      <li class="nav-item" data-roles="HoD"><a href="/settings.html"><i data-feather="settings"></i> Settings</a></li>
+    </ul>
+    <div class="sidebar-footer"><div class="user-avatar" id="avatarInitials">?</div><div class="user-info"><div class="user-name" id="sidebarName">Loading...</div><div class="user-role" id="sidebarRole">—</div></div><button class="btn-logout" onclick="AUTH.logout()"><i data-feather="log-out"></i></button></div>
+  </nav>
+
+  <main class="main-content">
+    <header class="top-bar">
+      <button class="sidebar-toggle" id="sidebarToggle"><i data-feather="menu"></i></button>
+      <div class="breadcrumb">Notifications</div>
+      <div class="top-bar-actions">
+        <button class="notif-bell" id="notifBell"><i data-feather="bell"></i><span class="notif-badge hidden" id="notifCount">0</span></button>
+        <span class="date-display" id="currentDate"></span>
+      </div>
+    </header>
+
+    <div class="page-content" style="max-width:800px;margin:0 auto">
+      <div class="page-header">
+        <div class="page-header-left"><h1 class="page-title">Notifications</h1><p class="page-subtitle">All alerts, reminders, and system messages</p></div>
+        <div class="page-actions">
+          <button class="btn btn-secondary" id="btnMarkAll" onclick="markAllAndReload()">Mark All Read</button>
+          <button class="btn btn-secondary" id="btnRefresh" onclick="loadPage()"><i data-feather="refresh-cw"></i></button>
+        </div>
+      </div>
+
+      <!-- Filter tabs -->
+      <div class="status-tabs" style="margin-bottom:var(--space-4)">
+        <button class="status-tab active" onclick="setFilter('all', this)">All</button>
+        <button class="status-tab" onclick="setFilter('unread', this)">Unread <span class="tab-count" id="unreadCount">0</span></button>
+        <button class="status-tab" onclick="setFilter('critical', this)">Critical</button>
+        <button class="status-tab" onclick="setFilter('tasks', this)">Tasks</button>
+        <button class="status-tab" onclick="setFilter('handover', this)">Handover</button>
+        <button class="status-tab" onclick="setFilter('training', this)">Training</button>
+      </div>
+
+      <!-- Notification list -->
+      <div class="table-card">
+        <div id="notifFullList" style="divide-y:1px solid var(--color-border)">
+          <div class="empty-state-sm">Loading notifications...</div>
+        </div>
+        <div id="notifPagination" style="padding:var(--space-4);text-align:center;border-top:1px solid var(--color-border);display:none">
+          <button class="btn btn-secondary btn-xs" id="btnLoadMore" onclick="loadMore()">Load More</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/ui.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/components.js"></script>
+  <script src="/assets/js/notifications.js"></script>
+  <script>
+    AUTH.requireAuth();
+    feather.replace();
+    UI.setPageUser(AUTH.getSession());
+    UI.initSidebarToggle();
+
+    let currentFilter = 'all';
+    let currentPage = 1;
+    let allNotifs = [];
+
+    async function loadPage() {
+      UI.showSectionLoader('notifFullList');
+      try {
+        const data = await API.get('/api/notifications/list', { limit: 50 });
+        allNotifs = data.notifications || [];
+        document.getElementById('unreadCount').textContent = data.unread_count || 0;
+        renderList();
+      } catch (e) { UI.showEmptyState('notifFullList', 'Could not load notifications'); }
+    }
+
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.status-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderList();
+    }
+
+    function renderList() {
+      let filtered = allNotifs;
+      if (currentFilter === 'unread')   filtered = allNotifs.filter(n => n.read_flag === 'FALSE' || !n.read_flag);
+      if (currentFilter === 'critical') filtered = allNotifs.filter(n => n.severity === 'critical');
+      if (currentFilter === 'tasks')    filtered = allNotifs.filter(n => n.module_name === 'tasks');
+      if (currentFilter === 'handover') filtered = allNotifs.filter(n => n.module_name === 'handover');
+      if (currentFilter === 'training') filtered = allNotifs.filter(n => n.module_name === 'training');
+
+      const container = document.getElementById('notifFullList');
+      if (!filtered.length) { UI.showEmptyState('notifFullList', 'No notifications', 'Try a different filter'); return; }
+
+      container.innerHTML = filtered.map(n => `
+        <div class="notif-item ${n.read_flag === 'FALSE' || !n.read_flag ? 'unread' : ''} sev-${n.severity}"
+             onclick="readAndGo('${n.notification_id}', '${n.action_target || ''}')">
+          <div class="notif-icon">${n.severity === 'critical' ? '🔴' : n.severity === 'warning' ? '🟡' : '🔵'}</div>
+          <div class="notif-content">
+            <div class="notif-title">${UTILS.escapeHtml(n.title)}</div>
+            <div class="notif-msg">${UTILS.escapeHtml(n.message)}</div>
+            <div style="display:flex;gap:var(--space-3);align-items:center;margin-top:4px">
+              <span class="notif-time">${UTILS.formatDateTime(n.created_datetime)}</span>
+              <span class="badge badge-gray" style="text-transform:capitalize">${n.module_name}</span>
+              ${n.severity !== 'info' ? `<span class="badge ${n.severity === 'critical' ? 'badge-red' : 'badge-orange'}">${n.severity}</span>` : ''}
+            </div>
+          </div>
+          ${n.read_flag === 'FALSE' || !n.read_flag ? '<div class="notif-dot"></div>' : ''}
+        </div>`).join('');
+    }
+
+    async function readAndGo(notifId, actionTarget) {
+      try { await API.post('/api/notifications/read', { notification_id: notifId }); } catch(e){}
+      if (actionTarget && actionTarget !== 'undefined' && actionTarget !== '') window.location.href = actionTarget;
+      else loadPage();
+    }
+
+    async function markAllAndReload() {
+      await NOTIFICATIONS.markAllRead();
+      loadPage();
+    }
+
+    loadPage();
+    NOTIFICATIONS.startPolling(CONFIG.polling_interval_ms);
+  </script>
+</body>
+</html>
