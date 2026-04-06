@@ -3,7 +3,7 @@
 // UPDATE n8n_base_url before deployment
 
 const CONFIG = Object.freeze({
-  n8n_base_url: 'https://YOUR-N8N-INSTANCE.app.n8n.cloud/webhook',
+  n8n_base_url: 'https://n8n.kib-cc-wfm.com/webhook',
 
   session_key: 'kib_ops_session',
   session_duration_hrs: 8,
