@@ -9,124 +9,28 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%;font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-    body{
-      background:#060F24;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      position:relative;
-      overflow:hidden;
-    }
-    /* Subtle background decoration */
-    body::before{
-      content:'';position:absolute;
-      width:600px;height:600px;
-      border-radius:50%;
-      background:radial-gradient(circle,rgba(24,119,197,0.12) 0%,transparent 70%);
-      top:-100px;right:-100px;
-      pointer-events:none;
-    }
-    body::after{
-      content:'';position:absolute;
-      width:400px;height:400px;
-      border-radius:50%;
-      background:radial-gradient(circle,rgba(14,164,114,0.08) 0%,transparent 70%);
-      bottom:-80px;left:-80px;
-      pointer-events:none;
-    }
-    .card{
-      background:#FFFFFF;
-      border-radius:20px;
-      padding:44px 40px;
-      width:420px;
-      max-width:100%;
-      box-shadow:0 24px 64px rgba(0,0,0,0.35),0 8px 24px rgba(0,0,0,0.2);
-      position:relative;
-      z-index:1;
-    }
-    .logo-mark{
-      width:52px;height:52px;
-      background:linear-gradient(135deg,#1877C5,#0EA472);
-      border-radius:14px;
-      display:flex;align-items:center;justify-content:center;
-      font-size:16px;font-weight:900;color:#fff;
-      letter-spacing:-0.5px;
-      margin-bottom:20px;
-      box-shadow:0 8px 20px rgba(24,119,197,0.35);
-    }
-    .portal-name{
-      font-size:22px;font-weight:800;
-      color:#0A1628;letter-spacing:-0.5px;
-      margin-bottom:4px;
-    }
-    .portal-sub{
-      font-size:12px;color:#8A9BB0;
-      font-weight:500;margin-bottom:32px;
-    }
+    body{background:#060F24;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden}
+    body::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(24,119,197,0.12) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none}
+    body::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(14,164,114,0.08) 0%,transparent 70%);bottom:-80px;left:-80px;pointer-events:none}
+    .card{background:#fff;border-radius:20px;padding:44px 40px;width:420px;max-width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.35),0 8px 24px rgba(0,0,0,0.2);position:relative;z-index:1}
+    .logo-mark{width:52px;height:52px;background:linear-gradient(135deg,#1877C5,#0EA472);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;letter-spacing:-0.5px;margin-bottom:20px;box-shadow:0 8px 20px rgba(24,119,197,0.35)}
+    .portal-name{font-size:22px;font-weight:800;color:#0A1628;letter-spacing:-0.5px;margin-bottom:4px}
+    .portal-sub{font-size:12px;color:#8A9BB0;font-weight:500;margin-bottom:32px}
     .form-group{margin-bottom:16px}
-    label{
-      display:block;font-size:10px;font-weight:700;
-      color:#4A5568;text-transform:uppercase;
-      letter-spacing:0.8px;margin-bottom:8px;
-    }
-    select,input{
-      width:100%;padding:11px 14px;
-      border:1.5px solid #E4EAF3;
-      border-radius:10px;
-      font-size:14px;font-family:'IBM Plex Sans',system-ui,sans-serif;
-      color:#0A1628;background:#FAFBFD;
-      outline:none;transition:border-color 0.15s,box-shadow 0.15s;
-      appearance:none;-webkit-appearance:none;
-    }
-    select{
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A9BB0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-      background-repeat:no-repeat;
-      background-position:right 14px center;
-      padding-right:38px;
-    }
-    select:focus,input:focus{
-      border-color:#1877C5;
-      box-shadow:0 0 0 3px rgba(24,119,197,0.12);
-      background:#fff;
-    }
+    label{display:block;font-size:10px;font-weight:700;color:#4A5568;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px}
+    select,input{width:100%;padding:11px 14px;border:1.5px solid #E4EAF3;border-radius:10px;font-size:14px;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#0A1628;background:#FAFBFD;outline:none;transition:border-color 0.15s,box-shadow 0.15s;appearance:none;-webkit-appearance:none}
+    select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A9BB0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+    select:focus,input:focus{border-color:#1877C5;box-shadow:0 0 0 3px rgba(24,119,197,0.12);background:#fff}
     input[type="password"]{letter-spacing:2px;font-size:18px}
     input[type="password"]::placeholder{letter-spacing:0;font-size:14px}
-    .btn-signin{
-      width:100%;padding:13px;
-      background:linear-gradient(135deg,#1877C5,#1565A8);
-      color:#fff;border:none;border-radius:10px;
-      font-size:14px;font-weight:700;
-      font-family:'IBM Plex Sans',system-ui,sans-serif;
-      cursor:pointer;margin-top:8px;
-      box-shadow:0 4px 14px rgba(24,119,197,0.4);
-      transition:all 0.15s;
-      letter-spacing:0.2px;
-    }
-    .btn-signin:hover{
-      background:linear-gradient(135deg,#1565A8,#0F4C8A);
-      box-shadow:0 6px 20px rgba(24,119,197,0.5);
-      transform:translateY(-1px);
-    }
+    .btn-signin{width:100%;padding:13px;background:linear-gradient(135deg,#1877C5,#1565A8);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:'IBM Plex Sans',system-ui,sans-serif;cursor:pointer;margin-top:8px;box-shadow:0 4px 14px rgba(24,119,197,0.4);transition:all 0.15s;letter-spacing:0.2px}
+    .btn-signin:hover{background:linear-gradient(135deg,#1565A8,#0F4C8A);box-shadow:0 6px 20px rgba(24,119,197,0.5);transform:translateY(-1px)}
     .btn-signin:disabled{opacity:0.6;cursor:not-allowed;transform:none}
-    .error-box{
-      background:#FEE8E8;border:1px solid #FCCACA;
-      border-radius:8px;padding:10px 14px;
-      font-size:12px;color:#8A1818;
-      margin-top:12px;display:none;
-    }
-    .divider{
-      display:flex;align-items:center;gap:12px;
-      margin:24px 0;
-    }
+    .error-box{background:#FEE8E8;border:1px solid #FCCACA;border-radius:8px;padding:10px 14px;font-size:12px;color:#8A1818;margin-top:12px;display:none}
+    .divider{display:flex;align-items:center;gap:12px;margin:24px 0}
     .divider-line{flex:1;height:1px;background:#E4EAF3}
     .divider-text{font-size:11px;color:#B8C5D4;font-weight:500;white-space:nowrap}
-    .footer-note{
-      text-align:center;margin-top:20px;
-      font-size:11px;color:#B8C5D4;
-    }
-    /* PIN dots visual */
+    .footer-note{text-align:center;margin-top:20px;font-size:11px;color:#B8C5D4}
     .pin-hint{font-size:10px;color:#8A9BB0;margin-top:5px;font-weight:500}
     .loader{display:none;align-items:center;justify-content:center;gap:8px}
     .loader-dots{display:flex;gap:4px}
@@ -141,95 +45,74 @@
     <div class="logo-mark">KIB</div>
     <div class="portal-name">Operations Portal</div>
     <div class="portal-sub">Kuwait International Bank · Internal Use Only</div>
-
     <form id="loginForm" autocomplete="off">
       <div class="form-group">
-        <label for="userSelect">Your Name</label>
+        <label>Your Name</label>
         <select id="userSelect" required>
           <option value="">— Select your name —</option>
         </select>
       </div>
-
       <div class="form-group">
-        <label for="pinInput">4-Digit PIN</label>
-        <input type="password" id="pinInput" maxlength="4"
-               inputmode="numeric" placeholder="Enter PIN" required>
+        <label>4-Digit PIN</label>
+        <input type="password" id="pinInput" maxlength="4" inputmode="numeric" placeholder="Enter PIN" required>
         <div class="pin-hint">Enter the 4-digit PIN assigned to you</div>
       </div>
-
       <button type="submit" class="btn-signin" id="loginBtn">
         <span id="btnText">Sign In</span>
-        <span class="loader" id="btnLoader">
-          <div class="loader-dots"><span></span><span></span><span></span></div>
-        </span>
+        <span class="loader" id="btnLoader"><div class="loader-dots"><span></span><span></span><span></span></div></span>
       </button>
-
       <div class="error-box" id="loginError"></div>
     </form>
-
-    <div class="divider">
-      <div class="divider-line"></div>
-      <div class="divider-text">Secure Internal Portal</div>
-      <div class="divider-line"></div>
-    </div>
-
+    <div class="divider"><div class="divider-line"></div><div class="divider-text">Secure Internal Portal</div><div class="divider-line"></div></div>
     <div class="footer-note">Forgot your PIN? Contact your manager or IT support.</div>
   </div>
 
-  <script src="/cc-task/assets/js/config.js"></script>
-  <script src="/cc-task/assets/js/utils.js"></script>
   <script>
-    const SESSION_KEY = CONFIG?.session_key || 'kib_ops_session';
-
-    function getSession(){
-      try{
-        const s = JSON.parse(localStorage.getItem(SESSION_KEY));
-        return s && new Date(s.expires_at) > new Date() ? s : null;
-      }catch{return null;}
-    }
+    const GAS_URL   = 'https://script.google.com/macros/s/AKfycbwuEc5Ph14L5YaSC2ppK_3Dsrn-mLucGwsDGn06v5F2VqENfsZia3L1TzbC5WxOLgtd2A/exec';
+    const SES_KEY   = 'kib_ops_session';
 
     // Redirect if already logged in
-    if(getSession()) window.location.href = '/cc-task/index.html';
+    try {
+      const s = JSON.parse(localStorage.getItem(SES_KEY));
+      if (s && new Date(s.expires_at) > new Date()) window.location.href = '/cc-task/index.html';
+    } catch(e) {}
 
-    // Load user list
-    const N8N_URL = CONFIG?.n8n_base_url || 'https://YOUR-N8N-INSTANCE/webhook';
+    // Load user list from GAS
     (async () => {
       try {
-        const res = await fetch(N8N_URL + '/api/users/list');
+        const url = GAS_URL + '?action=users_list';
+        const res = await fetch(url);
         const data = await res.json();
         const users = data?.data?.users || [];
         const sel = document.getElementById('userSelect');
+        users.sort((a,b) => a.full_name.localeCompare(b.full_name));
         users.forEach(u => {
-          if(u.active_flag !== 'FALSE'){
-            const opt = document.createElement('option');
-            opt.value = u.user_id;
-            opt.textContent = u.full_name + (u.role ? ' · ' + u.role : '');
-            opt.dataset.name = u.full_name;
-            sel.appendChild(opt);
-          }
+          const opt = document.createElement('option');
+          opt.value       = u.user_id;
+          opt.textContent = u.full_name + ' (' + u.role + ')';
+          sel.appendChild(opt);
         });
       } catch(e) {
-        // Silently fail — user can still type manually
+        console.warn('Could not load users:', e);
       }
     })();
 
-    // PIN: digits only
+    // PIN digits only
     document.getElementById('pinInput').addEventListener('input', function(){
       this.value = this.value.replace(/\D/g,'').slice(0,4);
     });
 
     // Login submit
-    document.getElementById('loginForm').addEventListener('submit', async function(e){
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const userId = document.getElementById('userSelect').value;
-      const pin    = document.getElementById('pinInput').value;
-      const errEl  = document.getElementById('loginError');
-      const btn    = document.getElementById('loginBtn');
+      const user_id = document.getElementById('userSelect').value;
+      const pin     = document.getElementById('pinInput').value;
+      const errEl   = document.getElementById('loginError');
+      const btn     = document.getElementById('loginBtn');
 
-      if(!userId || pin.length !== 4){
+      if (!user_id || pin.length !== 4) {
         errEl.textContent = 'Please select your name and enter your 4-digit PIN.';
-        errEl.style.display = 'block';
-        return;
+        errEl.style.display = 'block'; return;
       }
 
       btn.disabled = true;
@@ -238,23 +121,23 @@
       errEl.style.display = 'none';
 
       try {
-        const res  = await fetch(N8N_URL + '/api/user/bootstrap', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({user_id: userId, pin})
+        const res  = await fetch(GAS_URL, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ action: 'login', user_id, pin })
         });
         const data = await res.json();
 
-        if(data.success && data.data){
-          localStorage.setItem(SESSION_KEY, JSON.stringify(data.data));
+        if (data.success && data.data) {
+          localStorage.setItem(SES_KEY, JSON.stringify(data.data));
           window.location.href = '/cc-task/index.html';
         } else {
-          throw new Error(data.error?.message || 'Invalid credentials');
+          throw new Error(data.error?.message || 'Login failed');
         }
       } catch(err) {
-        errEl.textContent = err.message === 'Invalid credentials'
+        errEl.textContent = err.message.includes('PIN') || err.message.includes('not found') || err.message.includes('Incorrect')
           ? 'Incorrect PIN. Please try again.'
-          : 'Could not connect. Check your network or n8n connection.';
+          : 'Connection error. Check your network and try again.';
         errEl.style.display = 'block';
         btn.disabled = false;
         document.getElementById('btnText').style.display = '';
