@@ -1,15 +1,12 @@
-// /assets/js/config.js
 // KIB Operations Portal — Configuration
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyIrYIAchLYq9Id5VjzFyrPWRmqz5_pYCki1lkHV5F7zhk46X_UMACro9TvBQZtgvquNA/exec';
 
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwuEc5Ph14L5YaSC2ppK_3Dsrn-mLucGwsDGn06v5F2VqENfsZia3L1TzbC5WxOLgtd2A/exec';
-
-// API helper — calls Google Apps Script
 const API = {
   async get(action, params) {
     const url = new URL(GAS_URL);
     url.searchParams.set('action', action);
-    const session = AUTH ? AUTH.getSession() : null;
-    if (session) url.searchParams.set('session_token', session.session_token);
+    const s = AUTH ? AUTH.getSession() : null;
+    if (s) url.searchParams.set('session_token', s.session_token);
     Object.keys(params || {}).forEach(k => url.searchParams.set(k, params[k]));
     const res  = await fetch(url.toString());
     const data = await res.json();
@@ -17,8 +14,8 @@ const API = {
     return data.data;
   },
   async post(action, body) {
-    const session = AUTH ? AUTH.getSession() : null;
-    if (session) body.session_token = session.session_token;
+    const s = AUTH ? AUTH.getSession() : null;
+    if (s) body.session_token = s.session_token;
     body.action = action;
     const res  = await fetch(GAS_URL, {
       method:  'POST',
@@ -37,8 +34,8 @@ const CONFIG = Object.freeze({
   session_duration_hrs: 8,
   polling_interval_ms:  60000,
   kuwait_tz_offset_hrs: 3,
-  shift_types:     ['Morning', 'Afternoon', 'Evening', 'Night'],
-  priority_levels: ['Low', 'Medium', 'High', 'Critical'],
+  shift_types:     ['Morning','Afternoon','Evening','Night'],
+  priority_levels: ['Low','Medium','High','Critical'],
   task_statuses:   ['New','Assigned','InProgress','Pending','WaitingInput','UnderReview','Completed','Cancelled','Overdue','Escalated'],
   task_categories: ['Managerial','Operational','QA','BackOffice','TeamLeadership','AssistantLeadership','Compliance','FollowUp','Escalation','Handover','Coaching','Training','Sales','General'],
   training_categories: ['Product','Procedure','Compliance','Soft Skills','Systems','Sales Technique','QA','General'],
