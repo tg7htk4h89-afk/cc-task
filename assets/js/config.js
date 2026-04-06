@@ -1,5 +1,5 @@
 // KIB Operations Portal — Configuration
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyIrYIAchLYq9Id5VjzFyrPWRmqz5_pYCki1lkHV5F7zhk46X_UMACro9TvBQZtgvquNA/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbybaA6t5DeEIkSW8hMw42g-ZKx-EhQ39O2pzdf6mGA1KlouF3jNoapMU2dok3PTUiENTg/exec';
 
 const API = {
   async get(action, params) {
